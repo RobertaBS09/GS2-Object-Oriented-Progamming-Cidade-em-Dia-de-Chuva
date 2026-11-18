@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Trechos</title>
+    <link rel="stylesheet" th:href="@{/css/visual.css}">
+</head>
+<body>
+
+<header class="cabecalho cabecalho-cidade">
+    <div class="cabecalho-conteudo">
+        <a class="marca" th:href="@{/}">
+            <span class="marca-icone"><span class="chuva"><i></i><i></i><i></i></span></span>
+            <div>
+                <h1>Cidade em Dia de Chuva</h1>
+                <small>Defesa Civil · Monitoramento de calçadas</small>
+            </div>
+        </a>
+        <nav class="menu">
+            <a th:href="@{/}">Início</a>
+            <a th:href="@{/bairros}">Bairros</a>
+            <a class="ativo" th:href="@{/trechos}">Trechos</a>
+            <a th:href="@{/leituras}">Leituras</a>
+        </nav>
+        <span class="monitorando">Monitorando</span>
+    </div>
+</header>
+
+<main class="conteudo">
+    <div class="titulo-pagina">
+        <h2>Trechos</h2>
+        <a class="botao" th:href="@{/trechos/novo}">+ Novo trecho</a>
+    </div>
+
+    <p class="mensagem-erro" th:if="${erro != null}" th:text="${erro}"></p>
+
+    <p class="vazio" th:if="${trechos.isEmpty()}">Nenhum trecho cadastrado.</p>
+
+    <table th:if="${!trechos.isEmpty()}">
+        <thead>
+        <tr>
+            <th>Logradouro</th>
+            <th>Bairro</th>
+            <th>Tipo de calçada</th>
+            <th>Altitude (m)</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="t : ${trechos}">
+            <td th:text="${t.logradouro}">logradouro</td>
+            <td><span class="etiqueta" th:text="${t.bairroNome}">bairro</span></td>
+            <td>
+                <span class="sem-luz" th:if="${t.tipoCalcada == 'Sem iluminação'}">
+                    <span class="lampada"></span>
+                    <span th:text="${t.tipoCalcada}">Sem iluminação</span>
+                </span>
+                <span th:if="${t.tipoCalcada != 'Sem iluminação'}" th:text="${t.tipoCalcada}">tipo</span>
+            </td>
+            <td><span th:text="${t.altitude}">0</span><span class="unidade">m</span></td>
+            <td class="acoes">
+                <a class="botao botao-secundario" th:href="@{/trechos/{id}/editar(id=${t.id})}">Editar</a>
+
+                <form class="inline" method="post"
+                      th:action="@{/trechos/{id}/excluir(id=${t.id})}"
+                      onsubmit="return confirm('Excluir o trecho e todas as suas leituras?')">
+                    <button type="submit" class="botao botao-excluir">Excluir</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+<footer class="rodape">Cidade em Dia de Chuva · Global Solution 2026.2 · FIAP</footer>
+
+</body>
+</html>

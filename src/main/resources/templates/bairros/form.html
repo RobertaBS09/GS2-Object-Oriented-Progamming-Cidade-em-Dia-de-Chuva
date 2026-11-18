@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bairro</title>
+    <link rel="stylesheet" th:href="@{/css/visual.css}">
+</head>
+<body>
+
+<header class="cabecalho cabecalho-cidade">
+    <div class="cabecalho-conteudo">
+        <a class="marca" th:href="@{/}">
+            <span class="marca-icone"><span class="chuva"><i></i><i></i><i></i></span></span>
+            <div>
+                <h1>Cidade em Dia de Chuva</h1>
+                <small>Defesa Civil · Monitoramento de calçadas</small>
+            </div>
+        </a>
+        <nav class="menu">
+            <a th:href="@{/}">Início</a>
+            <a class="ativo" th:href="@{/bairros}">Bairros</a>
+            <a th:href="@{/trechos}">Trechos</a>
+            <a th:href="@{/leituras}">Leituras</a>
+        </nav>
+        <span class="monitorando">Monitorando</span>
+    </div>
+</header>
+
+<main class="conteudo">
+    <div class="titulo-pagina">
+        <h2 th:text="${bairroDTO.id == null} ? 'Novo bairro' : 'Alterar bairro'">Bairro</h2>
+    </div>
+
+    <p class="mensagem-erro" th:if="${erro != null}" th:text="${erro}"></p>
+
+    <form class="formulario" th:action="@{/bairros/salvar}" th:object="${bairroDTO}" method="post">
+
+        <input type="hidden" th:field="*{id}">
+
+        <div class="campo">
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" th:field="*{nome}">
+            <div class="erro-campo" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></div>
+        </div>
+
+        <div class="campo">
+            <label for="zona">Zona</label>
+            <select id="zona" th:field="*{zona}">
+                <option value="">Selecione...</option>
+                <option th:each="z : ${zonas}" th:value="${z}" th:text="${z}"></option>
+            </select>
+            <div class="erro-campo" th:if="${#fields.hasErrors('zona')}" th:errors="*{zona}"></div>
+        </div>
+
+        <div class="campo campo-checkbox">
+            <label>
+                <input type="checkbox" th:field="*{possuiPiscinao}">
+                Possui piscinão
+            </label>
+        </div>
+
+        <div class="botoes-form">
+            <button type="submit" class="botao">Salvar</button>
+            <a class="botao botao-secundario" th:href="@{/bairros}">Cancelar</a>
+        </div>
+    </form>
+</main>
+
+<footer class="rodape">Cidade em Dia de Chuva · Global Solution 2026.2 · FIAP</footer>
+
+</body>
+</html>

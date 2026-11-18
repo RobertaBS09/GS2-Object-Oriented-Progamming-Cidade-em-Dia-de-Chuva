@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cidade em Dia de Chuva</title>
+    <link rel="stylesheet" th:href="@{/css/visual.css}">
+</head>
+<body>
+
+<header class="cabecalho cabecalho-cidade">
+    <div class="cabecalho-conteudo">
+        <a class="marca" th:href="@{/}">
+            <span class="marca-icone"><span class="chuva"><i></i><i></i><i></i></span></span>
+            <div>
+                <h1>Cidade em Dia de Chuva</h1>
+                <small>Defesa Civil · Monitoramento de calçadas</small>
+            </div>
+        </a>
+        <nav class="menu">
+            <a class="ativo" th:href="@{/}">Início</a>
+            <a th:href="@{/bairros}">Bairros</a>
+            <a th:href="@{/trechos}">Trechos</a>
+            <a th:href="@{/leituras}">Leituras</a>
+        </nav>
+        <span class="monitorando">Monitorando</span>
+    </div>
+</header>
+
+<main class="conteudo">
+    <div class="titulo-pagina">
+        <h2>Bem-vindo</h2>
+    </div>
+
+    <p>Sistema da Defesa Civil para acompanhar, trecho a trecho, onde a água está se acumulando nas calçadas
+        em dias de chuva intensa.</p>
+
+    <div class="atalhos">
+        <a class="atalho" th:href="@{/bairros}">
+            <strong>Bairros</strong>
+            <span>Cadastro dos bairros e painel com a situação de cada trecho.</span>
+        </a>
+        <a class="atalho" th:href="@{/trechos}">
+            <strong>Trechos</strong>
+            <span>Trechos de calçada monitorados, com tipo e altitude.</span>
+        </a>
+        <a class="atalho" th:href="@{/leituras}">
+            <strong>Leituras</strong>
+            <span>Leituras dos sensores de nível de água e o status calculado.</span>
+        </a>
+    </div>
+</main>
+
+<footer class="rodape">Cidade em Dia de Chuva · Global Solution 2026.2 · FIAP</footer>
+
+</body>
+</html>

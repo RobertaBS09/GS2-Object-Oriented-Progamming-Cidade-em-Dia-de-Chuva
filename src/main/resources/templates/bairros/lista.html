@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bairros</title>
+    <link rel="stylesheet" th:href="@{/css/visual.css}">
+</head>
+<body>
+
+<header class="cabecalho cabecalho-cidade">
+    <div class="cabecalho-conteudo">
+        <a class="marca" th:href="@{/}">
+            <span class="marca-icone"><span class="chuva"><i></i><i></i><i></i></span></span>
+            <div>
+                <h1>Cidade em Dia de Chuva</h1>
+                <small>Defesa Civil · Monitoramento de calçadas</small>
+            </div>
+        </a>
+        <nav class="menu">
+            <a th:href="@{/}">Início</a>
+            <a class="ativo" th:href="@{/bairros}">Bairros</a>
+            <a th:href="@{/trechos}">Trechos</a>
+            <a th:href="@{/leituras}">Leituras</a>
+        </nav>
+        <span class="monitorando">Monitorando</span>
+    </div>
+</header>
+
+<main class="conteudo">
+    <div class="titulo-pagina">
+        <h2>Bairros</h2>
+        <a class="botao" th:href="@{/bairros/novo}">+ Novo bairro</a>
+    </div>
+
+    <p class="mensagem-erro" th:if="${erro != null}" th:text="${erro}"></p>
+
+    <p class="vazio" th:if="${bairros.isEmpty()}">Nenhum bairro cadastrado.</p>
+
+    <table th:if="${!bairros.isEmpty()}">
+        <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Zona</th>
+            <th>Possui piscinão</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="b : ${bairros}">
+            <td th:text="${b.nome}">nome</td>
+            <td><span class="etiqueta" th:text="${b.zona}">zona</span></td>
+            <td>
+                <span class="etiqueta etiqueta-sim" th:if="${b.possuiPiscinao}">Sim</span>
+                <span class="etiqueta etiqueta-nao" th:if="${!b.possuiPiscinao}">Não</span>
+            </td>
+            <td class="acoes">
+                <a class="botao botao-secundario" th:href="@{/bairros/{id}/editar(id=${b.id})}">Editar</a>
+
+                <form class="inline" method="post"
+                      th:action="@{/bairros/{id}/excluir(id=${b.id})}"
+                      onsubmit="return confirm('Excluir?')">
+                    <button type="submit" class="botao botao-excluir">Excluir</button>
+                </form>
+
+                <a class="botao" th:href="@{/bairros/{id}/painel(id=${b.id})}">Painel</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+<footer class="rodape">Cidade em Dia de Chuva · Global Solution 2026.2 · FIAP</footer>
+
+</body>
+</html>

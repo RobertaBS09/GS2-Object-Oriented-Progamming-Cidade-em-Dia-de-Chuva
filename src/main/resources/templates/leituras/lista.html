@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Leituras</title>
+    <link rel="stylesheet" th:href="@{/css/visual.css}">
+</head>
+<body>
+
+<header class="cabecalho cabecalho-cidade">
+    <div class="cabecalho-conteudo">
+        <a class="marca" th:href="@{/}">
+            <span class="marca-icone"><span class="chuva"><i></i><i></i><i></i></span></span>
+            <div>
+                <h1>Cidade em Dia de Chuva</h1>
+                <small>Defesa Civil · Monitoramento de calçadas</small>
+            </div>
+        </a>
+        <nav class="menu">
+            <a th:href="@{/}">Início</a>
+            <a th:href="@{/bairros}">Bairros</a>
+            <a th:href="@{/trechos}">Trechos</a>
+            <a class="ativo" th:href="@{/leituras}">Leituras</a>
+        </nav>
+        <span class="monitorando">Monitorando</span>
+    </div>
+</header>
+
+<main class="conteudo">
+    <div class="titulo-pagina">
+        <h2>Leituras</h2>
+        <a class="botao" th:href="@{/leituras/novo}">+ Nova leitura</a>
+    </div>
+
+    <p class="mensagem-erro" th:if="${erro != null}" th:text="${erro}"></p>
+
+    <p class="vazio" th:if="${leituras.isEmpty()}">Nenhuma leitura registrada.</p>
+
+    <table th:if="${!leituras.isEmpty()}">
+        <thead>
+        <tr>
+            <th>Data e hora</th>
+            <th>Trecho</th>
+            <th>Lâmina (cm)</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="l : ${leituras}">
+            <td th:text="${#temporals.format(l.dataHora, 'dd/MM/yyyy HH:mm')}">01/11/2026 17:20</td>
+            <td th:text="${l.trechoDescricao}">trecho</td>
+            <td th:text="${l.laminaCm}">0</td>
+            <td>
+                <span th:class="|status status-${l.status}|">
+                    <span class="chuva" th:if="${l.status != 'NORMAL'}"><i></i><i></i><i></i></span>
+                    <span th:text="${l.status}">STATUS</span>
+                </span>
+            </td>
+            <td class="acoes">
+                <a class="botao botao-secundario" th:href="@{/leituras/{id}/editar(id=${l.id})}">Editar</a>
+
+                <form class="inline" method="post"
+                      th:action="@{/leituras/{id}/excluir(id=${l.id})}"
+                      onsubmit="return confirm('Excluir?')">
+                    <button type="submit" class="botao botao-excluir">Excluir</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+<footer class="rodape">Cidade em Dia de Chuva · Global Solution 2026.2 · FIAP</footer>
+
+</body>
+</html>

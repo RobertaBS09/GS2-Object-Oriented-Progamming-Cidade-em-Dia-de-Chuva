@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel do bairro</title>
+    <link rel="stylesheet" th:href="@{/css/visual.css}">
+</head>
+<body>
+
+<header class="cabecalho cabecalho-cidade">
+    <div class="cabecalho-conteudo">
+        <a class="marca" th:href="@{/}">
+            <span class="marca-icone"><span class="chuva"><i></i><i></i><i></i></span></span>
+            <div>
+                <h1>Cidade em Dia de Chuva</h1>
+                <small>Defesa Civil · Monitoramento de calçadas</small>
+            </div>
+        </a>
+        <nav class="menu">
+            <a th:href="@{/}">Início</a>
+            <a class="ativo" th:href="@{/bairros}">Bairros</a>
+            <a th:href="@{/trechos}">Trechos</a>
+            <a th:href="@{/leituras}">Leituras</a>
+        </nav>
+        <span class="monitorando">Monitorando</span>
+    </div>
+</header>
+
+<main class="conteudo">
+    <div class="titulo-pagina">
+        <h2 th:text="|Painel do bairro ${bairro.nome}|">Painel do bairro</h2>
+        <span class="subtitulo" style="margin: 0" th:text="|Zona ${bairro.zona}|">Zona</span>
+    </div>
+
+    <div class="cartoes">
+        <div class="cartao cartao-NORMAL">
+            <div class="rotulo">Normal</div>
+            <div class="numero" th:text="${qtdNormal}">0</div>
+        </div>
+        <div class="cartao cartao-ATENCAO">
+            <div class="rotulo"><span class="chuva"><i></i><i></i><i></i></span>Atenção</div>
+            <div class="numero" th:text="${qtdAtencao}">0</div>
+        </div>
+        <div class="cartao cartao-ALERTA">
+            <div class="rotulo"><span class="chuva"><i></i><i></i><i></i></span>Alerta</div>
+            <div class="numero" th:text="${qtdAlerta}">0</div>
+        </div>
+    </div>
+
+    <p class="vazio" th:if="${itens.isEmpty()}">Este bairro ainda não tem trechos cadastrados.</p>
+
+    <table th:if="${!itens.isEmpty()}">
+        <thead>
+        <tr>
+            <th>Logradouro</th>
+            <th>Tipo de calçada</th>
+            <th>Altitude (m)</th>
+            <th>Última lâmina (cm)</th>
+            <th>Último status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${itens}">
+            <td th:text="${item.logradouro}">logradouro</td>
+            <td>
+                <span class="sem-luz" th:if="${item.tipoCalcada == 'Sem iluminação'}">
+                    <span class="lampada"></span>
+                    <span th:text="${item.tipoCalcada}">Sem iluminação</span>
+                </span>
+                <span th:if="${item.tipoCalcada != 'Sem iluminação'}" th:text="${item.tipoCalcada}">tipo</span>
+            </td>
+            <td th:text="${item.altitude}">0</td>
+            <td th:text="${item.ultimaLamina != null} ? ${item.ultimaLamina} : '—'">—</td>
+            <td>
+                <span th:if="${item.ultimoStatus != null}" th:class="|status status-${item.ultimoStatus}|">
+                    <span class="chuva" th:if="${item.ultimoStatus != 'NORMAL'}"><i></i><i></i><i></i></span>
+                    <span th:text="${item.ultimoStatus}">STATUS</span>
+                </span>
+                <span class="vazio" th:if="${item.ultimoStatus == null}">Sem leitura</span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <a class="botao botao-secundario" th:href="@{/bairros}">Voltar</a>
+</main>
+
+<footer class="rodape">Cidade em Dia de Chuva · Global Solution 2026.2 · FIAP</footer>
+
+</body>
+</html>
